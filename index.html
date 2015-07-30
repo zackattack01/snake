@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Snake</title>
+    <link rel="stylesheet" type="text/css" href="./snake.css">
+  </head>
+  <body>
+    <h1>S N A K E</h1>
+    <script src="./jquery-2.1.1.js"></script>
+    <script src="./snake.js"></script>
+    <script src="./snake-view.js"></script>
+    <div class="board group"></div>
+    <script>
+      var $el = $(".board");
+      var board = new Snake.Board ();
+      var view = new Snake.View (board, $el);
+
+    </script>
+  </body>
+</html>

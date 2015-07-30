@@ -1,0 +1,54 @@
+@font-face {
+  font-family: tech-forest;
+  src: url(tech_forest.ttf);
+}
+h1 {
+  font-size: 96px;
+  font-family: 'tech-forest';
+  text-align: center;
+  margin-bottom: 20px;
+  margin-top:30px;
+}
+
+body {
+  background-image: url(bg.png);
+}
+.square {
+  width: 48px;
+  height: 48px;
+  float: left;
+  left-margin: -2px;
+  bottom-margin: -2px;
+  border: 1px solid white;
+
+}
+
+.empty-square {
+}
+
+.board {
+  display: block;
+  margin: 0 auto;
+  width: 500px;
+  height: 500px;
+  border: thin solid white;
+}
+
+.row {
+  position: relative;
+  height: 50px;
+}
+
+.group:after {
+  display: block;
+  content: "";
+  clear: both;
+}
+
+.snake {
+  background-image: url(snake_body.png);
+}
+
+.apple {
+  background-image: url(apple.png); 
+}
