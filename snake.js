@@ -69,6 +69,11 @@
     this.newApple();
   };
 
+  Board.prototype.reset = function () {
+    this.snake = new Snake("N", this);
+    this.newApple();
+  };
+
   Board.prototype.newApple = function() {
     var pos = [Math.floor(Math.random() * 10), Math.floor(Math.random() * 10)]
     if (!this.snake.occupied(pos)) {
