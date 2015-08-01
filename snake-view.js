@@ -9,32 +9,28 @@
     this.setupBoard();
     this.timeAlive = 0;
     var that = this;
-    setInterval(function () {
+    this.endGame = setInterval(function () {
       that.step();
       that.timeAlive += 1;
-    }, 500);
+    }, 100);
   };
 
   View.prototype.step = function () {
     this.board.snake.move();
+    if (!this.board.snake.alive) { clearInterval(this.endGame) };
     this.renderBoard();
-    if (this.timeAlive % 15 === 0) {
-      this.board.addApple();
-    };
   };
 
   View.prototype.renderBoard = function() {
     var boardArr = this.board.render();
     var $squares = $(".square");
-    $squares.removeClass("empty-square snake apple");
+    $squares.removeClass("snake apple");
     for (var i = 0; i < $squares.length; i++) {
       $square = $($squares[i])
       if (boardArr[i] === "S") { 
         $square.addClass("snake");
       } else if (boardArr[i] === "A") {
         $square.addClass("apple")
-      } else {
-        $square.addClass("empty-square");
       }
     };
   };
@@ -47,10 +43,10 @@
   };
 
   View.KEYCODES = {
-    87: "N",
-    65: "W",
-    83: "S",
-    68: "E"
+    38: "N",
+    37: "W",
+    40: "S",
+    39: "E"
   };
 
   View.prototype.handleKeyEvent = function (event) {
@@ -68,9 +64,6 @@
       for (var j = 0; j < 10; j++) {
         var $square = $("<div></div>");
         $square.addClass("square");
-        // $square.data("i", i);
-        // $square.data("j", j);
-
         $row.append($square);
       }
     }

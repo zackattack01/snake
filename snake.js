@@ -6,18 +6,23 @@
   var Snake = window.Snake.Snake = function (dir, board) {
     this.dir = Snake.DIRECTIONS[dir];
     this.board = board;
-    this.segments = [[5,5],[5,6],[5,7]];
+    this.segments = [[5,5]];
+    this.alive = true;
   };
 
   Snake.DIRECTIONS = {"W": [0, -1], "S": [1, 0], "E": [0, 1], "N": [-1, 0]};
 
   Snake.prototype.move = function () {
     var nextPos = Snake.plus(this.segments[0], this.dir);
-    if (!this.board.appleSpot(nextPos)) {
-      this.segments.unshift(nextPos);
-      this.segments.pop();
+    if (nextPos[0] < 0 || nextPos[0] > 9 || nextPos[1] < 0 || 
+        nextPos[1] > 9 || this.occupied(nextPos)) {
+      this.alive = false;
     } else {
-      this.board.removeApple(nextPos);
+      if (Snake.equals(nextPos, this.board.appleSpot)) {
+        this.board.newApple();
+      } else {
+        this.segments.pop();
+      }
       this.segments.unshift(nextPos);
     }
   };
@@ -30,13 +35,9 @@
   };
 
   Snake.prototype.occupied = function (pos) {
-    if (this.segments.some(function (el) {
+    return this.segments.some(function (el) {
       return Snake.equals(pos, el);
-    })) {
-      return true;
-    } else {
-      return false;
-    }
+    });
   };
 
   Snake.plus = function (arr1, arr2) {
@@ -56,9 +57,7 @@
   };
 
   var Board = window.Snake.Board = function () {
-    this.snake = new Snake("N", this);
     this.grid = [];
-    this.apples = [];
     for (var i = 0; i < 10; i++) {
       var row = [];
       for (var j = 0; j < 10; j++) {
@@ -66,29 +65,17 @@
       }
       this.grid.push(row);
     }
+    this.snake = new Snake("N", this);
+    this.newApple();
   };
 
-  Board.prototype.appleSpot = function(pos) {
-    if (this.apples.some(function (el) {
-      return Snake.equals(pos, el);
-    })) {
-      return true;
-    } else {
-      return false;
-    }
-  };
-
-  Board.prototype.removeApple = function (pos) {
-    for (var i = 0; i < this.apples.length; i++) {
-      if (Snake.equals(pos, this.apples[i])) {
-        this.apples.splice(i, 1);
-      };
-    };
-  }
-
-  Board.prototype.addApple = function() {
+  Board.prototype.newApple = function() {
     var pos = [Math.floor(Math.random() * 10), Math.floor(Math.random() * 10)]
-    this.apples.push(pos)
+    if (!this.snake.occupied(pos)) {
+      this.appleSpot = pos;
+    } else {
+      this.newApple();
+    }
   };
 
   Board.prototype.render = function () {
@@ -97,7 +84,7 @@
       for (var j = 0; j < this.grid[i].length; j++) {
         if (this.snake.occupied([i,j])){
           renderArr.push("S");
-        } else if (this.appleSpot([i, j])) {
+        } else if (Snake.equals(this.appleSpot, [i, j])) {
           renderArr.push("A");
         } else {
           renderArr.push(".");
