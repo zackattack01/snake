@@ -66,15 +66,15 @@
   background: -webkit-repeating-radial-gradient(green 5%, black 10%); 
   background: -o-repeating-radial-gradient(green 5%, black 10%); 
   background: -moz-repeating-radial-gradient(green 5%, black 10%); 
-  background: repeating-radial-gradient(green 30%, black 60%); 
+  background: repeating-radial-gradient(green 5%, black 10%); 
   border-radius: 5px;
 }
 
 .apple {
+  background: radial-gradient(red 5%, black 70%); 
   background: -webkit-radial-gradient(red 5%, black 70%); 
   background: -o-radial-gradient(red 5%, black 70%); 
   background: -moz-radial-gradient(red 5%, black 70%); 
-  background: radial-gradient(red 5%, black 70%); 
   border-radius: 50%;
   border-color: black;
 }

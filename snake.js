@@ -8,11 +8,13 @@
     this.board = board;
     this.segments = [[5,5]];
     this.alive = true;
+    this.inTurn = false;
   };
 
   Snake.DIRECTIONS = {"W": [0, -1], "S": [1, 0], "E": [0, 1], "N": [-1, 0]};
 
   Snake.prototype.move = function () {
+    this.inTurn = false;
     var nextPos = Snake.plus(this.segments[0], this.dir);
     if (nextPos[0] < 0 || nextPos[0] > 9 || nextPos[1] < 0 || 
         nextPos[1] > 9 || this.occupied(nextPos)) {
@@ -28,10 +30,13 @@
   };
 
   Snake.prototype.turn = function (newDir) {
-    var dirVec = Snake.DIRECTIONS[newDir];
-    if (!Snake.isOpposite(this.dir, dirVec)) {
-      this.dir = dirVec;
+    if (!this.inTurn) {
+      var dirVec = Snake.DIRECTIONS[newDir];
+      if (!Snake.isOpposite(this.dir, dirVec)) {
+        this.dir = dirVec;
+      }
     }
+    this.inTurn = true;
   };
 
   Snake.prototype.occupied = function (pos) {
