@@ -34,13 +34,17 @@
     }
     var $message = $("<div class='popup'><h1>" + text + "</h1></div>")
     $('body').append($message);
+    $(document).one('keydown', this.handleEnter.bind(this));
   };
 
   View.prototype.handleEnter = function (e) {
+    e.preventDefault();
     if (e.keyCode === 13) {
       $('.popup').remove();
       this.board.reset();
       this.startGameLoop();
+    } else {
+      $(document).one('keydown', this.handleEnter.bind(this));
     }
   };
 
@@ -60,7 +64,6 @@
 
   View.prototype.bindListeners = function () {
     $(document).on("keydown", this.handleKeyEvent.bind(this))
-    $(document).on('keydown', this.handleEnter.bind(this));
   };
 
   View.KEYCODES = {
