@@ -9,6 +9,7 @@
     this.segments = [[5,5]];
     this.alive = true;
     this.inTurn = false;
+    this.score = 0;
   };
 
   Snake.DIRECTIONS = {"W": [0, -1], "S": [1, 0], "E": [0, 1], "N": [-1, 0]};
@@ -22,6 +23,7 @@
     } else {
       if (Snake.equals(nextPos, this.board.appleSpot)) {
         this.board.newApple();
+        this.score++;
       } else {
         this.segments.pop();
       }
@@ -72,6 +74,7 @@
     }
     this.snake = new Snake("N", this);
     this.newApple();
+    this.currentScore = this.snake.score;
   };
 
   Board.prototype.reset = function () {

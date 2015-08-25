@@ -9,6 +9,15 @@
   z-index: -1; 
 }
 
+.modal-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(20, 20, 20, 0.75);
+}
+
 .popup {
   font-family: 'Syncopate';
   text-align: center;
@@ -18,14 +27,17 @@
   border-radius: 10px;
   box-shadow: 7px 7px 5px #2F2F2F;
   color: white;
-  z-index: 2;
+  z-index: 3;
   position: fixed;
   top: 50%;
   left: 50%;
   padding: 15px;
+}
+
+.center {
   -ms-transform: translate(-50%, -50%); 
   -webkit-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);  
 }
 
 .stretch {
@@ -42,13 +54,14 @@
 .board {
   display: block;
   position: fixed;
-  top: 27%;
-  left: calc(50% - 250px);
+  top: 50%;
+  left: 50%;
   width: 500px;
   height: 500px;
   border: thin inset white;
   border-radius: 10px;
   box-shadow: 7px 7px 5px #2F2F2F;
+  background-color: black;
 }
 
 .row {
@@ -77,4 +90,8 @@
   background: -moz-radial-gradient(red 5%, black 70%); 
   border-radius: 50%;
   border-color: black;
+}
+
+.score {
+  color: white;
 }

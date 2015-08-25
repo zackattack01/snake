@@ -27,12 +27,18 @@
   };
 
   View.prototype.promptNextGame = function (gameOver) {
+    var message;
     if (gameOver) {
-      var text = "GAME OVER<br><small>PRESS ENTER TO PLAY AGAIN</small>";
+      var message = "GAME OVER<br><small>PRESS ENTER TO PLAY AGAIN</small>";
     } else {
-      var text = "<small>YOUR'E GOING &#8593<br>>ARROW KEYS TO REDIRECT<br>>ENTER TO BEGIN</small>"
+      var message = "<small>YOUR'E GOING &#8593<br>>ARROW KEYS TO REDIRECT<br>>ENTER TO BEGIN</small>"
     }
-    var $message = $("<div class='popup'><h1>" + text + "</h1></div>")
+    var $message = $(
+      "<div class='modal-bg'></div>" +
+      "<div class='popup center'><h1>" + 
+      message + 
+      "</h1></div>"
+    )
     $('body').append($message);
     $(document).one('keydown', this.handleEnter.bind(this));
   };
@@ -40,7 +46,7 @@
   View.prototype.handleEnter = function (e) {
     e.preventDefault();
     if (e.keyCode === 13) {
-      $('.popup').remove();
+      $('.popup, .modal-bg').remove();
       this.board.reset();
       this.startGameLoop();
     } else {
@@ -49,6 +55,7 @@
   };
 
   View.prototype.renderBoard = function () {
+    $('.score').html("<p>Your Score: " + this.board.currentScore + "</p>");
     var boardArr = this.board.render();
     var $squares = $(".square");
     $squares.removeClass("snake apple");
@@ -81,6 +88,7 @@
   };
 
   View.prototype.setupBoard = function () {
+    $('.score').html("<p>Your Score: " + this.board.currentScore + "</p>");
     for (var i = 0; i < 10; i++) {
       var $row = $("<div></div>");
       $row.addClass("row group");
