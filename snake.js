@@ -9,7 +9,6 @@
     this.segments = [[5,5]];
     this.alive = true;
     this.inTurn = false;
-    this.score = 0;
   };
 
   Snake.DIRECTIONS = {"W": [0, -1], "S": [1, 0], "E": [0, 1], "N": [-1, 0]};
@@ -22,8 +21,8 @@
       this.alive = false;
     } else {
       if (Snake.equals(nextPos, this.board.appleSpot)) {
+        this.board.currentScore++;
         this.board.newApple();
-        this.score++;
       } else {
         this.segments.pop();
       }
@@ -74,20 +73,21 @@
     }
     this.snake = new Snake("N", this);
     this.newApple();
-    this.currentScore = this.snake.score;
+    this.currentScore = 0;
   };
 
   Board.prototype.reset = function () {
     this.snake = new Snake("N", this);
     this.newApple();
+    this.currentScore = 0;
   };
 
   Board.prototype.newApple = function() {
     var pos = [Math.floor(Math.random() * 10), Math.floor(Math.random() * 10)]
-    if (!this.snake.occupied(pos)) {
-      this.appleSpot = pos;
-    } else {
+    if (this.snake.occupied(pos)) {
       this.newApple();
+    } else {
+      this.appleSpot = pos;
     }
   };
 

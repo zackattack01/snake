@@ -8,6 +8,7 @@
     this.bindListeners();
     this.setupBoard();
     this.promptNextGame(false);
+    this.paused = false;
   };
 
   View.prototype.step = function () {
@@ -29,24 +30,24 @@
   View.prototype.promptNextGame = function (gameOver) {
     var message;
     if (gameOver) {
-      var message = "GAME OVER<br><small>PRESS ENTER TO PLAY AGAIN</small>";
+      message = "GAME OVER<br><small>PRESS ENTER TO PLAY AGAIN</small>";
     } else {
-      var message = "<small>YOUR'E GOING &#8593<br>>ARROW KEYS TO REDIRECT<br>>ENTER TO BEGIN</small>"
+      message = "<small>YOUR'E GOING &#8593<br>>ARROW KEYS TO REDIRECT<br>>SPACE TO PAUSE AND RESTART<br>" +
+                 ">ENTER TO BEGIN</small>" 
+
     }
     var $message = $(
-      "<div class='modal-bg'></div>" +
-      "<div class='popup center'><h1>" + 
-      message + 
-      "</h1></div>"
-    )
+      "<div class='popup center'><h1>" + message + "</h1></div>"
+    );
     $('body').append($message);
+    $('.background').addClass('modal-bg');
     $(document).one('keydown', this.handleEnter.bind(this));
   };
 
   View.prototype.handleEnter = function (e) {
-    e.preventDefault();
     if (e.keyCode === 13) {
-      $('.popup, .modal-bg').remove();
+      $('.background').removeClass('modal-bg');
+      $('.popup').remove();
       this.board.reset();
       this.startGameLoop();
     } else {
@@ -55,7 +56,7 @@
   };
 
   View.prototype.renderBoard = function () {
-    $('.score').html("<p>Your Score: " + this.board.currentScore + "</p>");
+    $('.score').html("<p>SCORE: " + this.board.currentScore + "</p>");
     var boardArr = this.board.render();
     var $squares = $(".square");
     $squares.removeClass("snake apple");
@@ -82,13 +83,19 @@
 
   View.prototype.handleKeyEvent = function (e) {
     var dir = e.keyCode;
-    if (View.KEYCODES[dir]) {
+    if ( dir === 32 && this.paused === false ) {
+      this.paused = true;
+      clearInterval(this.endGame)
+    } else if ( dir === 32 ){
+      this.paused = false;
+      this.startGameLoop();
+    } else if ( View.KEYCODES[dir] ) {
       this.board.snake.turn(View.KEYCODES[dir]);
     };
   };
 
   View.prototype.setupBoard = function () {
-    $('.score').html("<p>Your Score: " + this.board.currentScore + "</p>");
+    $('.score').html("<p>SCORE: " + this.board.currentScore + "</p>");
     for (var i = 0; i < 10; i++) {
       var $row = $("<div></div>");
       $row.addClass("row group");
