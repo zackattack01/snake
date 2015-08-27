@@ -6,7 +6,7 @@
   var Snake = window.Snake.Snake = function (dir, board) {
     this.dir = Snake.DIRECTIONS[dir];
     this.board = board;
-    this.segments = [[5,5]];
+    this.segments = [[9,5]];
     this.alive = true;
     this.inTurn = false;
   };

@@ -40,18 +40,35 @@
       "<div class='popup center'><h1>" + message + "</h1></div>"
     );
     $('body').append($message);
-    $('.background').addClass('modal-bg');
+    $('body').append('<div class="modal-bg"></div>');
     $(document).one('keydown', this.handleEnter.bind(this));
   };
 
   View.prototype.handleEnter = function (e) {
     if (e.keyCode === 13) {
-      $('.background').removeClass('modal-bg');
+      $('.modal-bg').remove();
       $('.popup').remove();
       this.board.reset();
       this.startGameLoop();
     } else {
       $(document).one('keydown', this.handleEnter.bind(this));
+    }
+  };
+
+  View.prototype.handlePause = function () {
+    if (!this.paused) {
+      this.paused = true;
+      clearInterval(this.endGame)
+      $('body').append(
+        "<div class='popup center'><h1>PAUSED<br>" +
+        "<small>(SPACE TO START)</h1></div>"
+      );
+      $('body').append('<div class="modal-bg"></div>');
+    } else { 
+      this.paused = false;
+      $('.modal-bg').remove();
+      $('.popup').remove();
+      this.startGameLoop();
     }
   };
 
@@ -83,13 +100,9 @@
 
   View.prototype.handleKeyEvent = function (e) {
     var dir = e.keyCode;
-    if ( dir === 32 && this.paused === false ) {
-      this.paused = true;
-      clearInterval(this.endGame)
-    } else if ( dir === 32 ){
-      this.paused = false;
-      this.startGameLoop();
-    } else if ( View.KEYCODES[dir] ) {
+    if ( dir === 32 ) {
+      this.handlePause();
+     } else if ( View.KEYCODES[dir] ) {
       this.board.snake.turn(View.KEYCODES[dir]);
     };
   };
